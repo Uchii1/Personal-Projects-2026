@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- HEADING -->
+<head>
+    <!-- Site title and icon -->
+    <title>  Coin Counter </title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💷</text></svg>">
+
+    <!-- Recommended meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <!-- Link to CSS file-->
+    <link rel="stylesheet" href="coincounter.css">
+    <!-- This script tag bootstraps PyScript -->
+    <script type="module" src="https://pyscript.net/releases/2025.11.2/core.js"> </script> 
+</head>
+
+<body>
+    <h1>💷 Coin Counter</h1>
+
+    <div id="tips">
+        <h3>UK Coin Counter</h3>
+        <div class="calculator-tips">
+         Enter amount in pounds without the £ symbol (e.g. 2.50 for £2.50). 
+         <br> The calculator will return the minimum number of coins needed to make that amount, along with the specific coins to be used.
+        </div>
+    </div>
+
+    <div class="calculator-section">
+        <div id="calculator-input">
+            <input type="text" id="a" placeholder="0.00" size="10">
+        </div>
+        <div id="button">
+            <button id="calculate-button">Calculate</button>
+        </div>
+    </div>
+
+    <div id="result"></div>
+
+<script type="py">
+from pyscript import when
+from js import document
+
+@when("click", "#calculate-button")
+def calculator(event):
+    # This function evaluates the input from the user, and prints the result
+    input_val = document.getElementById("a").value
+    result_div = document.getElementById("result")
+
+    try:
+        # Converts the pound amount to pence
+        amount = round(float(input_val) * 100)
+
+
+        # Creates an empty variable (count), and list (coins_needed)
+        count = 0
+        coins_needed = []
+        
+        # Checks for each denomination in turn
+        while amount >= 200:
+            count += 1
+            coins_needed.append("£2")
+            amount = amount - 200
+
+        while amount >= 100:
+            count += 1
+            coins_needed.append("£1")
+            amount = amount - 100
+
+        while amount >= 50:
+            count += 1
+            coins_needed.append("50p")
+            amount = amount - 50
+
+        while amount >= 20:
+            count += 1
+            coins_needed.append("20p")
+            amount = amount - 20
+
+        while amount >= 10:
+            count += 1
+            coins_needed.append("10p")
+            amount = amount - 10
+
+        while amount >= 5:
+            count += 1
+            coins_needed.append("5p")
+            amount = amount - 5
+
+        while amount >= 2:
+            count += 1
+            coins_needed.append("2p")
+            amount = amount - 2
+
+        while amount >= 1:
+            count += 1
+            coins_needed.append("1p")
+            amount = amount - 1
+        
+        result_div.innerText = f" £{input_val} requires a minimum of {count} coins.\n These are: {', '.join(coins_needed)}"
+        
+    except:
+        result_div.innerText = "Error: Invalid input"
+</script>
+
+</body>
+
+<footer>
+    <hr style="border: 2px solid black">
+    <p>Webpage Design by U.C. Obiagwu <br>
+       For questions, comments and suggestions, reach out at: <i><span class="no-wrap">designs@utlitywebpages.com</span></i>
+    </p>
+</footer>
+
+</html>
