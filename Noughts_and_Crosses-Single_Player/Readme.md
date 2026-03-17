@@ -10,3 +10,6 @@ You play the crosses (X), and the computer plays the noughts (O).
 If you enter an invalid input, the programme will return an error message and let you try again.
 
 The aim is to achieve a full line of crosses before the computer achieves a full line of noughts.
+
+## Licence
+© 2026 U.C. Obiagwu under Apache Licence 2.0
