@@ -1,4 +1,4 @@
-# README File
+# README
 # Calculator Webpage with Python Backend
 
 ## INTRODUCTION
@@ -36,7 +36,7 @@ and displays this on your next visit, after you click into the textbox.
 During each use, the webpage stores and displays all the calculations done with the arithmetic calculator on that visit. 
 However, this is lost when the page is closed or refreshed, except for the last calculation.
 
-
-
+## Licence
+© 2026 U.C. Obiagwu under Apache Licence 2.0
 
 
