@@ -1,9 +1,10 @@
 # README 
-## Software Development Module Project Part B  - Task Management System
+## TASK MANAGEMENT SYSTEM
 
 ## Introduction 
 
-The programme is a Command Line Interface (CLI) task management system.  
+The programme is a Command Line Interface (CLI) task management system developed as part of an academic project.
+
 Although it is a CLI programme, it has been designed to be user friendly, with  extensive error-handling capabilities, and well-designed interactive features. The programme consists of a python script and a connected JSON file for long-term data storage. 
 The programme imports and uses the following modules: JSON (for data persistence), OS (for file-handling), and time (for decorative features, including a loading sequence) 
 
