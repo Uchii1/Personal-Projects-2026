@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load static %} <!-- Lets the images load-->
+{% block title %} Sign Up - StudySoft{% endblock %}
+
+
+
+<title> StudySoft - Sign Up </title>
+
+
+{% block extra_head %}
+<style>
+  body {
+    background: #f0f8ff;
+    font-family: sans-serif;
+    /* display: flex; remove*/
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 1rem;
+  }
+
+  .card {
+    background: #fff;
+    padding: 2rem;
+    border: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .15);
+    width: 40rem;
+    margin: 3rem;
+  }
+
+  .card button,
+  .btn-link {
+    display: block;
+    width: 100%;
+    padding: .6rem;
+    margin: 0;
+    background: cornflowerblue !important;
+    color: black !important;
+    border: 0 !important;
+    border-radius: 6px !important;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+  }
+
+  .card button:hover,
+  .btn-link:hover {
+    background: lightskyblue !important;
+  }
+
+  .login-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5rem 0 5rem 0;
+    gap: 4 rem;
+  }
+
+
+  input {
+    width: 100%;
+    padding: .5rem;
+    margin: .4rem 0 1rem;
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+  }
+
+
+  .error {
+    color: #c00;
+  }
+
+  /* the !important tags overrides base.html bootstrap*/
+
+  button,
+  .btn-link {
+    display: block;
+    width: 100%;
+    padding: .6rem;
+    margin: 0;
+    background: cornflowerblue !important;
+    color: black !important;
+    border: 0 !important;
+    border-radius: 6px !important;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    box-sizing: border-box;
+  }
+
+  button:hover,
+  .btn-link:hover {
+    background: lightskyblue !important;
+  }
+</style>
+{% endblock %}
+
+{% if form.errors %}{{ form.errors }}{% endif %}
+
+{% block content %}
+<div style="display:flex; flex-direction:column; align-items:center;">
+
+
+  <div>
+    <form class="card" method="post">
+      <h1 style="text-align: center;">Register for an Account</h1>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Register</button>
+
+      <br> Already have an account?
+      <a href="{% url 'login' %}" class="btn-link">Login</a>
+
+    </form>
+  </div>
+
+</div>
+{% endblock %}

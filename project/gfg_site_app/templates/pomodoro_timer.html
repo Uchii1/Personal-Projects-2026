@@ -1,0 +1,184 @@
+<!-- pomodoro_timer.html -->
+<!-- This is a simpler 'child' page of base.html-->
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Pomodoro Timer {% endblock %}
+
+
+{% block content %}
+<style>
+  .pomodoro {
+    max-width: 360px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    text-align: center;
+    background: lightskyblue;
+    border-radius: 12px;
+  }
+
+  #pomo-mode {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  #pomo-time {
+    font-size: 4rem;
+    margin: .5rem 0;
+  }
+
+  .pomodoro button {
+    width: 160px;
+    height: 42px;
+    margin: .25rem;
+    padding: 0;
+    cursor: pointer;
+    background:cornflowerblue;
+    color: #191970;
+    font-weight: 600;
+    border: none;
+    border-radius: 1000px;
+    transition: background .2s, transform .1s;
+  }
+
+  .pomodoro button:hover{
+    background-color: cornsilk;
+    color: #191970;
+
+  }
+
+  .pomodoro label {
+    display: block;
+    margin-top: .5rem;
+  }
+
+  .pomodoro input {
+    width: 6rem;
+    padding: 10px 14px;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.5rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+</style>
+
+
+    <div style="height: 2rem;"></div> <!-- Some spacing before the back button-->
+    <!-- Back to Home button at the end of the page -->
+    <a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+
+
+<div id="pomodoro" class="pomodoro">
+  <div id="pomo-mode">Work</div>
+  <div id="pomo-time">25:00</div>
+  <button id="pomo-toggle">Start Work </button> <br>
+  <button id="pomo-break-now"> Start Break </button> <br>
+  <button id="pomo-reset"> Reset Timer </button>
+  <button id="pomo-sound" title="Toggle sound"> 🔊</button>
+  <label>Work (min) <input type="number" id="pomo-work" min="1" value="25"></label>
+  <label>Break (min) <input type="number" id="pomo-break" min="1" value="10"></label>
+</div>
+
+<script>
+  (() => {
+    const $ = id => document.getElementById(id);
+    const timeEl = $("pomo-time"), modeEl = $("pomo-mode"), toggleBtn = $("pomo-toggle");
+    const workIn = $("pomo-work"), breakIn = $("pomo-break");
+
+
+    let soundOn = JSON.parse(localStorage.getItem("pomoSound") ?? "true");
+    const soundBtn = $("pomo-sound");
+    const renderSound = () => soundBtn.textContent = soundOn ? "🔊" : "🔇";
+    soundBtn.onclick = () => {
+      soundOn = !soundOn;
+      localStorage.setItem("pomoSound", soundOn);
+      renderSound();
+    };
+    renderSound();
+
+    const saved = JSON.parse(localStorage.getItem("pomoSettings") || "{}");
+    workIn.value = saved.work || 25;
+    breakIn.value = saved.brk || 10;
+
+    let mode = "work", remaining = workIn.value * 60, endTime = null, timer = null;
+    const baseTitle = document.title;
+
+
+    // Makes five 0.4s beeps, 0.2s apart
+    const beep = () => {
+      if (!soundOn) return;
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        [0, 0.2, 0.4, 0.6, 0.8].forEach(offset => {
+          const osc = ctx.createOscillator();
+          osc.connect(ctx.destination);
+          osc.frequency.value = 880;
+          osc.start(ctx.currentTime + offset);
+          osc.stop(ctx.currentTime + offset + 0.5);
+        });
+      } catch (e) { }
+    };
+
+    const render = () => {
+      const m = String(Math.floor(remaining / 60)).padStart(2, "0");
+      const s = String(remaining % 60).padStart(2, "0");
+      timeEl.textContent = `${m}:${s}`;
+      modeEl.textContent = mode === "work" ? "Work" : "Break";
+      document.title = timer ? `${m}:${s} - ${modeEl.textContent}` : baseTitle;
+    };
+
+    const tick = () => {
+      remaining = Math.max(0, Math.round((endTime - Date.now()) / 1000));
+      render();
+      if (remaining === 0) {
+        mode = mode === "work" ? "break" : "work";
+        remaining = (mode === "work" ? workIn.value : breakIn.value) * 60;
+        endTime = Date.now() + remaining * 1000;
+        beep();
+        render();
+      }
+    };
+
+    const start = () => {
+      clearInterval(timer);
+      endTime = Date.now() + remaining * 1000;
+      timer = setInterval(tick, 250);
+      toggleBtn.textContent = "Pause";
+      render();
+    };
+
+    const stop = () => {
+      clearInterval(timer);
+      timer = null;
+      toggleBtn.textContent = "Start";
+      render();
+    };
+
+    toggleBtn.onclick = () => (timer ? stop() : start());
+
+    $("pomo-break-now").onclick = () => {
+      mode = "break";
+      remaining = breakIn.value * 60;
+      start();
+    };
+
+    $("pomo-reset").onclick = () => {
+      stop();
+      mode = "work";
+      remaining = workIn.value * 60;
+      render();
+    };
+
+    [workIn, breakIn].forEach(el => el.onchange = () => {
+      localStorage.setItem("pomoSettings", JSON.stringify({ work: +workIn.value, brk: +breakIn.value }));
+      if (!timer) {
+        remaining = (mode === "work" ? workIn.value : breakIn.value) * 60;
+        render();
+      }
+    });
+
+    render();
+  })();
+</script>
+{% endblock %}

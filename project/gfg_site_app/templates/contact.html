@@ -1,0 +1,22 @@
+<!-- This is a simpler 'child' page of base.html-->
+{% extends "base.html" %}
+
+{% block title %} Contact Us - StudySoft{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Back to Home button at the end of the page -->
+  <a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+
+  <div style="margin: 1rem 0 3rem 0;"> <!-- Some spacing before the back button-->
+
+    <h1> Contact Us </h1>
+    <p> Please get in touch for feedback or enquiries! </p>
+
+    <strong> 📞Telephone: </strong> (+44) 121 389 4853 <br>
+    <strong> ✉️Email: </strong> hello@study-soft.co.uk <br>
+    <strong> 📪 Post: </strong> Suite 14, Phoenix Hall, Leeds, West Yorkshire. LS4 5HB <br>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}StudySoft - Home{% endblock %}
+
+{% block content %}
+<h1>Practice Quizes</h1>
+<br>
+
+
+
+{% for pair in pairs %}
+<div class="pair">
+
+  {% for item in pair %}
+  <!-- This way, the entire div class "study", presented as a square is a link, simplifying navigation-->
+  <a href="{{ item.link }}" style="text-decoration: none; color: black;">
+  <div class="study">
+    <h3> {{ item.title|linebreaks }} </h3>
+    <h5>{{ item.content|linebreaks }}</h5>
+  </div>
+  </a>
+  {% endfor %}
+
+</div>
+{% endfor %}
+
+<hr>
+{% endblock %}

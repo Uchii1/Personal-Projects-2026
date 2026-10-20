@@ -1,0 +1,25 @@
+<!-- This is a simpler 'child' page of base.html-->
+{% extends "base.html" %}
+
+{% block title %} About StudySoft - StudySoft{% endblock %}
+
+{% block content %}
+<div class="container">
+
+<!-- Back to Home button at the end of the page -->
+<a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+
+<div style="margin: 1rem 0 3rem 0;"> <!-- Some spacing before the back button-->
+  <h1>About StudySoft </h1>
+
+  <p> 
+    StudySoft is an innovative mathematics practice web application, deliberately tailored to the needs of
+    key stage 3 students. <br>
+
+    The user interface is designed to appeal to a 11-14 year old, encouraging focus, exploration and further study.
+  </p>
+
+</div>
+
+</div>
+{% endblock %}

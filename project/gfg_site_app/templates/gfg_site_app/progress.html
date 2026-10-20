@@ -1,0 +1,330 @@
+<!-- This is a simpler 'child' page of base.html-->
+{% extends "base.html" %}
+
+{% block title %} Your Progress - StudySoft {% endblock %}
+
+<!--Chart.js script  for charts on the progress page -->
+
+
+
+
+{% block content %}
+
+<div class="container">
+  <h1>Your Progress </h1>
+
+  <head>
+    <meta charset="utf-8">
+    <title>My Performance</title>
+    <style>
+      .cards {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 1rem 1.5rem;
+        box-shadow: 0 1px 4px #0002;
+        flex: 1;
+      }
+
+      .card b {
+        font-size: 2rem;
+        display: block;
+      }
+
+      .chart-box {
+        background: #fff;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        cursor: pointer;
+        box-shadow: 0 1px 4px #0002;
+      }
+
+.time-chart {
+    position: relative;
+    width: 95%;
+    max-width: 1000px;
+    margin: 0 auto;
+    height: 55vh;
+    min-height: 300px;
+}
+
+@media (min-width: 768px) {
+    .time-chart {
+        width: 90%;
+        height: 40vh;
+        min-height: 400px;
+    }
+}
+
+.time-chart,
+.time-chart canvas {
+    cursor: n-resize;
+    touch-action: pan-y; /* page still scrolls vertically, pinch goes to the chart */
+}
+
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+      }
+
+      td,
+      th {
+        padding: .5rem;
+        border-bottom: 1px solid #eee;
+        text-align: left;
+      }
+
+/* reset zoom button */
+#resetZoom {
+    background: lightskyblue;
+    border: none;
+    border-radius: 20px;
+    padding: 0.75rem 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    margin-bottom: 2.5rem;
+    width: 100%;
+}
+
+      #resetZoom:hover {
+        background: cornflowerblue;
+      }
+
+      @media (min-width: 768px) {
+    #resetZoom {
+        width: auto;
+        padding: 0.5rem 1.2rem;
+    }
+}
+
+      /* Styling for Performance per topic chart */
+      .type-chart {
+        max-width: 1000px;
+        position: relative;
+        height: 500px; /*height on mobiles*/
+        width: 95%;
+        margin: 0 auto;
+      }
+
+      @media (min-width: 768px) {
+    .type-chart {
+        height: 70vh; /*height on larger devices*/
+        min-height: 450px;
+        width: 90%;
+    }
+}
+
+      /* styles for explanations in summary and details */
+      summary {
+        cursor: pointer;
+        font-weight: bold;
+        margin: 1.5rem 0 0.5rem 0;
+        /* top and bottom spacing*/
+      }
+
+      details {
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+    </style>
+
+  </head>
+
+
+
+  <body>
+
+    <div class="cards">
+      <div class="card"><b>{{ summary.attempts }}</b>Quizzes Completed</div>
+      <div class="card"><b>{{ summary.overall_percent }}%</b>Overall Accuracy</div>
+    </div>
+
+
+    <!-- Socres over time-->
+    <h2> Scores from Practice Tests</h2>
+    <div class="chart-box time-chart"><canvas id="timeChart"></canvas></div>
+
+    <!-- Explanation-->
+    <details>
+      <summary> What does this mean? </summary>
+      <p> This shows the movement in your quiz scores over time between 0% and 100%
+        <br> 
+        Scroll over the graph to zoom in and out, or pinch on a mobile device
+      </p>
+    </details>
+
+    <button id="resetZoom" type="button">Reset zoom</button>
+
+    <br>
+    <!-- Weak spots bar chart -->
+    <h2> Skills  to Grow </h2>
+    <div class="chart-box" id="tagBox"><canvas id="tagChart"></canvas></div>
+    <!-- Explanation-->
+    <details>
+      <summary> What does this mean? </summary>
+      <p> These are the 8 skills where a little extra practice will help you improve the most, based on your past
+        quizzes.
+        <br> Hover over a bar to find out more, then try a quiz on a topic related to that skill.
+      </p>
+    </details>
+
+
+    <br>
+    <!-- Performance by Syllabus section -->
+    <h2 style="text-align: center;"> Performance per Topic </h2>
+    <div class="chart-box type-chart"><canvas id="typeChart"></canvas></div>
+    <details>
+      <summary> What does this mean? </summary>
+      <p> These are you average scores per topic.
+        <br> Practise more to watch this grow over time.
+      </p>
+    </details>
+
+    <div style="height: 2rem;"></div> <!-- Some spacing before the back button-->
+    <!-- Back to Home button at the end of the page -->
+    <a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+
+
+
+    <!-- JavaScript section -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2" defer></script>
+
+    <script>
+      fetch('/api/progress-data/')
+        .then(r => r.json())
+        .then(d => {
+          if (!d.status) return;
+
+          // 1. Score over time
+          const timeChart = new Chart(document.getElementById('timeChart'), {
+            type: 'line',
+            data: {
+              labels: d.over_time.map(p => p.date),
+              datasets: [{
+                label: 'Score (%)',
+                data: d.over_time.map(p => p.percent),
+                borderColor: '#f59e0b',
+                backgroundColor: '#f59e0b33',
+                fill: true,
+                tension: 0.3
+              }]
+            },
+
+            options: {
+              plugins: {
+                title: { display: true, text: 'Score over time (scroll to zoom, drag to pan)' },
+                tooltip: { callbacks: { afterLabel: ctx => d.over_time[ctx.dataIndex].quiz } },
+                zoom: {
+                  pan: { enabled: true, mode: 'x' },
+                  zoom: {
+                    wheel: { enabled: true },
+                    pinch: { enabled: true },
+                    drag: { enabled: false },   // set true for box-zoom (then pan needs Ctrl held)
+                    mode: 'x'
+                  },
+                  limits: {
+                    y: {
+                      min: 0,
+                      max: 105,
+                      minRange: 105,
+                    }
+                  }
+                }
+              },
+              scales: {
+                y: {
+                  min: 0, max: 110,
+                  afterBuildTicks: axis => {
+                    axis.ticks = [0, 20, 40, 60, 80, 100].map(value => ({ value }));
+                  }
+                }
+              },
+               responsive: true, 
+               maintainAspectRatio: false 
+            }
+          });
+          // controlling zoom on chart 1
+          document.getElementById('resetZoom').onclick = () => timeChart.resetZoom();
+
+          // 2. Strengths and weak spots (tags)
+          const tagBox = document.getElementById('tagBox');
+          if (!d.by_tag.length) {
+            tagBox.innerHTML = '<p>Answer more questions to see your strengths and weak spots.</p>';
+          } else {
+            tagBox.style.height = Math.max(220, d.by_tag.length * 34 + 90) + 'px';
+            const colour = p => p >= 75 ? '#22c55e' : p >= 50 ? '#f59e0b' : '#ef4444';
+            new Chart(document.getElementById('tagChart'), {
+              type: 'bar',
+              data: {
+                labels: d.by_tag.map(t => t.tag),
+                datasets: [{
+                  label: 'Accuracy (%)',
+                  data: d.by_tag.map(t => Math.max(t.percent, 3)),
+                  backgroundColor: d.by_tag.map(t => colour(t.percent))
+                }]
+              },
+              options: {
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: { display: false },
+                  title: { display: true, text: 'Weak Spots. (red = <50%, yellow = 50% - 75%)' },
+                  tooltip: {
+                    callbacks: {
+                      label: ctx => `${d.by_tag[ctx.dataIndex].percent}% correct`,
+                      afterLabel: ctx => `${d.by_tag[ctx.dataIndex].answered} answered`
+                    }
+                  }
+                },
+                scales: { x: { min: 0, max: 100 } }
+              }
+            });
+          }
+          // 3. Accuracy by topic
+          const typeColour = p => p >= 75 ? '#22c55e' : p >= 50 ? '#f59e0b' : '#ef4444';
+          new Chart(document.getElementById('typeChart'), {
+            type: 'bar',
+            data: {
+              labels: d.by_type.map(t => t.type),
+              datasets: [{
+                label: 'Accuracy (%)',
+                data: d.by_type.map(t => t.percent),
+                backgroundColor: d.by_type.map(t => typeColour(t.percent))
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                title: { display: true, text: 'Performance by main topic' },
+                tooltip: { callbacks: { afterLabel: ctx => `${d.by_type[ctx.dataIndex].answered} answered` } }
+              },
+              scales: {
+            y: { min: 0, max: 100 },
+             x: { ticks: { autoSkip: false, maxRotation: 60, minRotation: 45 } }
+             }
+            },
+          });
+
+        });
+    </script>
+
+
+
+
+  </body>
+
+
+  {% endblock %}

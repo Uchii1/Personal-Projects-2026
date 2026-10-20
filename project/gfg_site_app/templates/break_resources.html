@@ -1,0 +1,77 @@
+<!-- This is a simpler 'child' page of base.html-->
+{% extends "base.html" %}
+
+{% block title %} Break Resources - StudySoft{% endblock %}
+
+{% block content %}
+
+    <div style="height: 2rem;"></div> <!-- Some spacing before the back button-->
+    <!-- Back to Home button at the end of the page -->
+    <div style="text-align: left;">
+    <a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+    </div>
+
+<h1>Break Resources</h1>
+
+<div class="container">
+
+  <div class="break-card">
+    <h2> Mental Maths Challenge</h2>
+    <p> Try our mental maths challenge! Five quick timed questions </p>
+    <a class="break-btn" href="{% url 'question' %}">Start the Challenge</a>
+  </div>
+
+  <div class="break-card">
+    <h2> Centinum Guessing Game </h2>
+    <p> A quick game where you guess a number between 1 and 100 in as few attempts as possible </p>
+    <a class="break-btn" href="{% url 'guess_game' %}">Start the Game</a>
+  </div>
+
+</div>
+
+<style>
+  /*formatting the cards and buttons on hoover, etc */
+  .break-card {
+    background: lightskyblue;
+    border: 2px solid black;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-top: 1.5rem;
+    max-width: 420px;
+    text-align: center ;
+  }
+
+  .break-card h2 {
+    margin-top: 0;
+  }
+
+  .break-btn {
+    display: inline-block;
+    background: cornflowerblue;
+    align-items: center;
+    color:black;
+    padding: 0.5rem 1rem;
+    border: 2px solid black;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .break-btn:hover {
+    background: cornsilk;
+    color: midnightblue;
+  }
+
+  /* settings for the boxes on the page*/
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 1rem;
+  }
+
+  .container>* {
+    flex: 0 1 500px;
+  }
+</style>
+{% endblock %}

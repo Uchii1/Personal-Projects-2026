@@ -1,0 +1,87 @@
+<!-- This is a simpler 'child' page of base.html-->
+{% extends "base.html" %}
+
+{% block title %} Syllabus - StudySoft{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Back to Home button at the end of the page -->
+  <a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+
+  <div style="margin: 1rem 0 3rem 0;"> <!-- Some spacing before the back button-->
+    <h1> Privacy Policy </h1>
+
+    <h3> Summary </h3>
+    <p>
+      At StudySoft we must collect certain information from our users for our site to run.
+      In this policy, we explain what we collect and why. 
+      <br>We collect only what is necessary for you to use our site. Your data is held securely,
+      and can be deleted when you request this or when you have not accessed the site in a long time.
+      <br> 
+    </p>
+    <h3> Introduction </h3>
+    <p>
+      StudySoft is a maths practice site for Key Stage 3 (Year 7 to 9) students (ages 11 to 14). <br>
+      We take privacy seriously and aim to both meet and exceed out legal obligations.
+      This policy is inteded to be easily comprehensible for the benefit of our users.
+      The policy applies ICO (Information Commissioner's Office) standards, including the ICO Children's Code for Edtech products.<br>
+      StudySoft is the data controller for this purposes, and our hosting provider is the processor.
+    </p>
+
+    <h3> Data We Collect </h3>
+    <p>
+      We use basic session and CSRF cookies to keey users logged in and keep the site secure.
+      <br>We do not collect user's full names, home addresses or photographs.
+      On registration, <b>we also ask users to not use their real names as their usernames</b>
+      We collect an email address for each user solely for account recovery and the delivery of key messages.
+    </p>
+
+
+    <h3> How We Use Your Data </h3>
+    <p>
+      <ul>
+        <li> To run your account and track your progress</li>
+        <li> To keep you logged in during study sessions and keep your account secure </li>
+        <li> To keep the site secure, and investigate and fix complaints</li>
+      </ul>
+    </p>
+
+    <h3> Legal Basis </h3>
+    <p>
+      Under UK GDPR (Article 6), Our primary legal basis of data collection is to provide the service we have contracted to provide our users.
+      <br>
+      We also rely on the basis of consent, meaning consent of our users over age 13, and consent of the parents of our users under age 13.
+    </p>
+
+    <h3>Data Retention  </h3>
+    <p>
+      We retain our users' data while they are using our services. 
+      We delete this data after 12 months of inactivity of 2 months after a valid deletion request by a user.
+      <br> We store data in hashed format, with secure HTTPS connections.
+    </p>
+
+    <h3> Your Rights </h3>
+    <p>
+        You may request to view, correct or delete your data on our systems at any time.
+        You can also withdraw consent for the use of your data at any time and this will mean you are no longer able to use our service.
+        Contact us at <a href="mailto:privacy@study-soft.co.uk" target="_blank">privacy@study-soft.co.uk</a> for these requests.
+        <br>Users aged 13 and over can make these requests by themselves. 
+        Parents and guardians can also make these requests on behalf of users, particularly users aged below 13.
+    </p>
+
+    <h3> Complaints </h3>
+    <p>
+       If you are unhappy with how we handle your data, please contact us first. 
+       You can also complain to the Information Commissioner's Office (ICO).
+    </p>
+
+    <h3> Policy Updates </h3>
+    <p>
+      This policy was last updated on 21st September 2026. Updates will continue as our policies evolve.
+      The next planned review is on 20th September 2027.
+    </p>
+
+  </div>
+</div>
+{% endblock %}

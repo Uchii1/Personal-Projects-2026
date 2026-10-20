@@ -1,0 +1,94 @@
+<!-- This is a simpler 'child' page of base.html-->
+{% extends "base.html" %}
+
+<!-- Loading css from Django file-->
+{% load static %} <!--load static is necessary for CSS-->
+
+
+{% block title %}Geometric Formulas{% endblock %}
+
+<!-- Adding extra CSS specific to this page to place images in the centre-->
+{%block extra_head %}
+
+<style>
+  .formulas-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    text-align: center;
+  }
+
+  .formula-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin: 2rem 0;
+  }
+
+  .formula img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .formula p {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+  }
+
+  /* stack to one column on small screens */
+  @media (max-width: 600px) {
+    .formula-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+{% endblock %}
+
+
+
+
+{% block content %}
+
+<div class="formulas-page">
+      <div style="height: 2rem;"></div> <!-- Some spacing before the back button-->
+    <!-- Back to Home button at the end of the page -->
+    <div style="text-align: left;">
+    <a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+</div>
+  <h1>Geometric Formulas</h1>
+
+  <div class="formula-grid">
+    <div class="formula">
+      <img src="{% static 'images/rectangle-formula.png' %}"
+        alt="rectangle: area equals length times breadth. perimeter equals 2 times length plus breadth" width="300">
+      <p>Rectangle Formulae </p>
+
+    </div>
+
+    <div class="formula">
+      <img src="{% static 'images/square-formula.png' %}"
+        alt="square: area equals length time length. perimeter equals 4 times length" width="300">
+      <p>Square Formulae </p>
+
+    </div>
+
+    <div class="formula">
+      <img src="{% static 'images/triangle-formula.png' %}"
+        alt="triangle: area equals half times base times height. perimeter equals sum of three sides" width="300">
+      <p>Triangle Formulae </p>
+
+    </div>
+
+    <div class="formula">
+      <img src="{% static 'images/circle-formula.png' %}"
+        alt="circle: area equals pi times radius squared. perimeter equals 2 times pi times radius" width="300">
+      <p>Circle Formulae</p>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %} Logged Out - StudySoft {% endblock %}
+
+{% block content %}
+
+  <style>
+    .card {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .15);
+      width: 320px;
+    }
+
+    a.btn {
+      display: inline-block;
+      margin: .5rem .3rem 0;
+      padding: .6rem 1rem;
+      background: #4a90e2;
+      color: #fff;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+
+    a.alt {
+      background: #e6eef8;
+      color: #333;
+    }
+
+    /* Card appearing on top of text */
+    .card {
+      position: relative;
+      position: center;
+      width: 320px;
+      max-width: 90%;
+      margin: 2rem auto; 
+    }
+
+    .close {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: none;
+      border: 0;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .close:hover {
+      color: #000;
+    }
+  </style>
+
+<div class="card" id="logoutCard">
+    <button class="close" onclick="document.getElementById('logoutCard').style.display='none'"
+      aria-label="Close">&times;</button>
+    <h2>You've been logged out</h2>
+    <p>Thanks for studying with us. See you next time!</p>
+    <a class="btn" href="{% url 'login' %}">Log in again</a>
+    <a class="btn alt" href="{% url 'home' %}">Home</a>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,111 @@
+<!-- This is a simpler 'child' page of base.html-->
+{% extends "base.html" %}
+
+{% block title %} Accessibility - StudySoft{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Back to Home button at the end of the page -->
+  <a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+
+  <div style="margin: 1rem 0 3rem 0;"> <!-- Some spacing after the back button-->
+
+    <h1> Accessibility Statement </h1>
+
+       <h3> Summary </h3>
+    <p>
+     In this policy, we explain what we have done to ensure our web application can be used effectively by everyone.
+      <br> We also explain how to address complaints regarding accessibility.
+    </p>
+
+
+    <h3> Introduction </h3>
+    <p>
+      StudySoft is a maths practice site for Key Stage 3 (Year 7 to 9) students (ages 11 to 14). <br>
+      We want every student to be able to use it confidently, including those with disabilities or additional needs.
+    </p>
+
+    <h3> Our Standard </h3>
+    <p>
+      We aim to meet the Web Content Accessibility Guidelines (WCAG) 2.2 at Level AA. <br>
+      We believe the site is presently partially conformant.
+    </p>
+
+    <h3> Compatibility and Testing </h3>
+    <p>
+      The site is built with HTML, CSS, JavaScript, Python and Django technologies.
+      It has been tested with Google Chrome and Mozilla Firefox web browsers, which are the recommended browsers for its
+      use.
+      Accessibility testing has been completed with WAVE.<br>
+
+      To use the site effectively, a desktop or laptop computer is recommended, alongside a mouse or touchscreen.
+      This will help students view text comfortably and select quiz answers. <br>
+
+      It is assumed that students have a calculator and writing materials at hand when attempting the questions. <br>
+      The site has also been developed with tablet and phone screens in mind, where answers to quizzes can be selected
+      via touchscreen.
+      However, a larger screen is ideal.
+    </p>
+
+    <h3> What We Have Done to Make <i>StudySoft</i> Accessible </h3>
+    <ul>
+      <li><strong>Readable text:</strong> We mainly use black or dark purple text on a cream background. The cream
+        background offers a strong contrast to the text, while being easier on the eyes.
+        <br>We have avoided italics, except when particularly useful. We have also applied dyslexia-friendly sans
+        serif fonts in the font options, and we have used a minimum font size of 12.
+      </li>  <br>
+      
+      <li><strong>Uncluttered pages:</strong> The site avoids decorative graphics. The quiz questions and solutions only
+        use images where necessary.
+      </li>  <br>
+
+      <li>
+        <strong>Alt text:</strong> All images that we have used also include relevant and helpful descriptors in the
+        alt text, to help our users that require screen readers.
+      </li>  <br>
+     
+        <li><strong>Study tools:</strong> An optional Pomodoro timer with a sound alarm helps students pace their work.
+        The timer opens in a new tab, so the user's progress on the quiz is not lost.
+        <br>There is also a formula page with geometric formulae.
+      </li> <br>
+
+      <li><strong>Break resources:</strong> Short games (mental maths and number guessing) are included, which can be
+        used during study breaks.</li>  <br>
+
+      <li><strong>Progress charts:</strong> Explanations are added below progress charts, to ensure they are
+        understandable to younger users.</li>  <br>
+    </ul>
+
+
+    <h3> Known Limitations </h3>
+    <p>
+      Some interactive questions and the games may not yet work fully with screen readers or keyboard-only navigation.
+      <br>
+      The progress graphics, question graphics and pomodoro timer may not meet all WCAG criteria. We are working to
+      improve these areas by 20th September 2027.
+    </p>
+
+    <h3> Feedback and Support </h3>
+    <p>
+      If you find a barrier or need content in another format, such as a printable worksheet for a specific quiz, please
+      contact us at <a href="mailto:hello@study-soft.co.uk" target="_blank">hello@study-soft.co.uk</a>.
+      We aim to reply within seven UK working days.
+    </p>
+
+    <h3> Preparation of this Statement</h3>
+    <p>
+      This statement was prepared on 20th September 2026 and was last reviewed on 16th October 2026.
+      <br> It is based on assessment by a trained IT professional and automated testing with WAVE.
+    </p>
+
+    <h3> Next Review </h3>
+    <p>
+      This policy will be updated as required, so might change without prior notice. <br>The next planned mandatory review is on 16th October 2027.
+    </p>
+
+
+
+  </div>
+</div>
+{% endblock %}

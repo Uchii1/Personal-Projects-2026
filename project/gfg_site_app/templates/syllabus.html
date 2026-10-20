@@ -1,0 +1,58 @@
+<!-- This is a simpler 'child' page of base.html-->
+{% extends "base.html" %}
+
+{% block title %} Syllabus - StudySoft{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Back to Home button at the end of the page -->
+  <a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+
+  <div style="margin: 1rem 0 3rem 0;"> <!-- Some spacing before the back button-->
+
+    <h1> StudySoft Syllabus </h1>
+    <p> Find below our current syllabus.<br>It does not yet include all parts of the KS3 syllabus, but we're working to
+      add more topics! </p>
+
+    <h3>1. Algebra</h3>
+    <strong>1.1</strong> Linear equations with unknowns on both sides <br>
+    <strong>1.2</strong> Solving equations with brackets <br>
+    <strong>1.3</strong> Finding the nth term of an arithmetic progression <br>
+    <strong>1.4</strong> Finding the arithmetic common difference (including negatives)<br>
+    <strong>1.5</strong> Finding missing terms <br>
+    <br><br>
+
+    <h3>2. Area and Perimeter</h3>
+    <strong>2.1</strong> Area and perimeter of rectangles  <br>
+    <strong>2.2</strong> Area and perimeter of triangles  <br>
+    <strong>2.3</strong> Area and perimeter of trapezia and parallelograms <br>
+    <strong>2.4</strong> Area and circumference of circles and semicircles, using π, 3.14 or 22/7 <br>
+    <strong>2.5</strong> Enlargement and scale factor of area <br>
+    <strong>2.6</strong> Percentage change in area <br>
+
+    <br><br>
+    <h3>3. Fractions, Decimals and Percentages</h3>
+    <strong>3.1</strong> Converting between fractions, decimals and percentages <br>
+    <strong>3.2</strong> Rounding (decimal places) <br>
+    <strong>3.3</strong> Percentage increase and decrease <br>
+    <strong>3.4</strong> Mixed-form problem solving <br>
+
+    <br><br>
+    <h3>4. Probability and Statistics </h3>
+    <strong>4.1</strong> Measures of central tendency: Mean median and mode <br>
+    <strong>4.2</strong> Measures of regression: range, variance and standard deviation.<br>
+    <strong>4.3</strong> Missing values from a given mean or median <br>
+    <strong>4.4</strong> Finding the most representative average (outliers) <br>
+    <strong>4.5</strong> Effect of scaling data on mean and range <br>
+
+    <br><br>
+    <h3>5. Ratio and Proportion</h3>
+    <strong>5.1</strong> Simplifying ratios (including decimals) <br>
+    <strong>5.2</strong> Sharing items according to a ratio <br>
+    <strong>5.3</strong> Best value comparisons  <br>
+    <strong>5.4</strong> Direct proportion and the unitary method<br>
+    <strong>5.5</strong> Real world applications: map scales, currency conversion, time estimates <br>
+  </div>
+</div>
+{% endblock %}

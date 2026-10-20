@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Choose your font</h1>
+
+<div class="choose- font page">
+
+<div>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+
+  <button type="submit" class="save">Save</button>
+</form>
+</div>
+
+<div>
+<!-- Back to Home button at the end of the page -->
+<a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+
+</div>
+
+<style>
+.back-link {
+  display: inline-block;
+  margin-top: 1.5rem;
+}
+/* a.backlink targets links */
+a.back-link {
+    display: inline-block;
+    font-size: clamp(0.75rem, 2.5vw, 1.5rem);
+    font-weight: 750;
+    width: 20%;
+    letter-spacing: 0.1rem;
+    margin: 0.5rem 0;
+    height: 3rem;
+    background: lightskyblue;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    line-height: 3rem; /* vertically centres text */
+    transition: all 0.3s ease;
+}
+
+a.back-link:hover {
+    background: cornflowerblue;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+button.save {
+    font-size: clamp(0.75rem, 2.5vw, 1.5rem);
+    /*min font, viewpoint, max font*/
+    font-weight: 750;
+    width: 20%;
+    letter-spacing: 0.1rem;
+    margin: 0.5rem 0;
+    height: 3rem;
+    background: lightskyblue;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+}
+
+button.save::after {
+    /* underline that grows on hover */
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: var(--darkblue);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+button.save:hover {
+    background: cornflowerblue !important;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+    /* no font-weight change: it resizes the button */
+}
+
+  select { display: block !important; 
+    visibility: visible !important; 
+    opacity: 1 !important; 
+      border-radius: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+
+</style>
+
+<script>
+  document.querySelector("#id_font").addEventListener("change", e => {
+    document.body.dataset.font = e.target.value;
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}Quiz | StudySoft{% endblock %}
+
+{% block extra_head %}
+<style>
+    .quiz-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+    }
+
+    .quiz-card hr {
+        display: none;
+    }
+
+.back-link {
+    display: inline-block;    
+    text-decoration: none;
+    background: lightskyblue;
+    color: black;
+    border-radius: 20px;
+    padding: 0.5rem 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 2.5rem;
+}
+
+.back-link:hover {
+    background: cornflowerblue;
+}   
+
+/* Submit button */
+.submit-button {
+    display: inline-block; 
+    text-decoration: none;
+    background: lightskyblue;
+    color: black;
+    border-radius: 999px;
+    border-bottom: solid transparent;
+    padding: 0.5rem 1.2rem;
+    font-weight: bold;
+    cursor: pointer;   
+}
+
+.submit-button:hover {
+    background: cornflowerblue;
+} 
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+{% csrf_token %}
+<script src="https://unpkg.com/vue@3.0.0-rc.5/dist/vue.global.prod.js"></script>
+
+<div id="app">
+    <div class="container mt-4">
+        <div class="col-md-6 mx-auto">
+
+<a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+
+
+            <h1 style="text-align: center;"> Questions </h1>
+
+            <div class="quiz-card" v-for="question in questions" :key="question.uid">
+                <p style="white-space: pre-line;">[[question.question]]</p>
+                <img v-if="question.question_image" :src="question.question_image" style="max-width: 100%;"
+                    alt="image for question">
+
+                <div class="form-check" v-for="(answer, i) in question.answer" :key="i">
+                    <input @change="checkAnswer($event, question.uid)" :value="answer.answer" class="form-check-input"
+                        type="radio" :name="'question-' + question.uid" :id="'answer-' + question.uid + '-' + i">
+                    <label class="form-check-label" :for="'answer-' + question.uid + '-' + i">
+                        [[answer.answer]]
+                    </label>
+                </div>
+            </div>
+            
+            <br>
+
+            <button type="button" style="margin-bottom: 3rem;" class="submit-button" v-if="!submitted" @click="submitQuiz">
+                Submit Quiz
+            </button> 
+
+            <br>
+
+             <a href="{% url 'home' %}" class="back-link" class="submit-button" v-if="!submitted">← Quit </a> 
+            
+
+            <div v-if="submitted" class="quiz-card mt-4">
+                <h4>You scored [[score]] / [[questions.length]]</h4>
+                <ul>
+                    <li v-for="question in questions" :key="question.uid" class="mb-3">
+                        [[question.question]] —
+                        <span :style="{color: results[question.uid] ? 'green' : 'red'}">
+                            [[results[question.uid] ? 'Correct' : 'Incorrect']]
+                        </span>
+                        <p v-if="question.explanation" style="white-space: pre-line;">[[question.explanation]]</p>
+                        <img v-if="question.explanation_image" :src="question.explanation_image"
+                            style="max-width: 100%;" alt="image for explanation">
+                    </li>
+                </ul>
+                <a href="{% url 'home' %}"><button type="button" class="submit-button">← Back to Home</button></a>
+                <a href="{% url 'progress' %}"><button type="button" class="submit-button">Your
+                        Progress</button></a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    const app = Vue.createApp({
+        delimiters: ['[[', ']]'],
+        data() {
+            return {
+                gfg: '{{gfg}}',
+                questions: [],
+                results: {},
+                submitted: false,
+                gfg_id: '{{ gfg_id }}',
+                startTime: Date.now(),
+                lastTick: Date.now(),
+                times: {},
+            }
+        },
+        computed: {
+        // socre = number of questions currently marked correct
+            score() { return Object.values(this.results).filter(r => r).length }
+        },
+        methods: {
+            // Method runs each time the student selects an asnwer option
+            getQuestions() {
+                fetch(`/api/get-quiz/?gfg=${this.gfg}`)
+                    .then(r => r.json())
+                    .then(result => { this.questions = result.data })
+            },
+            checkAnswer(event, uid) {
+                // Finds the question being answered 
+                const question = this.questions.find(q => q.uid === uid)
+                // Matches the selected option to its sotred answer object
+                const chosen = question.answer.find(a => a.answer === event.target.value)
+                // this records true or false on the answer's accuracy
+                this.results[uid] = chosen ? chosen.is_correct : false
+                if (!(uid in this.times)) {
+                    const now = Date.now()
+                    this.times[uid] = (now - this.lastTick) / 1000
+                    this.lastTick = now
+                }
+            },
+            submitQuiz() {
+                if (this.submitted) return
+                this.submitted = true
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+                fetch('/api/submit-quiz/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken },
+                    body: JSON.stringify({
+                        gfg_id: this.gfg_id,
+                        score: this.score,
+                        total: this.questions.length,
+                        seconds_taken: (Date.now() - this.startTime) / 1000,
+                        answers: this.questions.map(q => ({
+                            uid: q.uid,
+                            is_correct: this.results[q.uid] === true,
+                            seconds_taken: this.times[q.uid] || 0
+                        }))
+                    })
+                }).then(r => r.json()).then(d => { if (!d.status) console.error(d.error) })
+            }
+        },
+        created() { this.getQuestions() },
+    });
+    app.mount('#app')
+</script>
+{% endblock %}

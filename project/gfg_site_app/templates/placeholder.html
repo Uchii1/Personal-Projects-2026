@@ -1,0 +1,46 @@
+<!-- This is a simpler 'child' page of base.html-->
+{% extends "base.html" %}
+
+{% block title %} Information - StudySoft{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Back to Home button at the end of the page -->
+  <a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+
+  <div style="margin: 1rem 0 3rem 0;"> <!-- Some spacing before the back button-->
+    <h1>More Information - Placeholder Page </h1>
+
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Etiam interdum euismod dui, ac ullamcorper nisi pretium porta.
+      Aenean eu posuere orci, a lobortis ante.
+      Praesent vehicula eu massa et feugiat. Vestibulum eu eros sed nunc maximus hendrerit. Lorem ipsum dolor sit amet,
+      consectetur adipiscing elit.
+      <br>
+
+      Fusce sem eros, bibendum vel purus eget, iaculis tincidunt justo.
+      In erat tortor, lobortis eget cursus at, vestibulum sit amet purus.
+      Sed luctus massa lorem, id volutpat orci lacinia ut. Nam a orci ac turpis ultricies commodo vitae sed elit.
+      <br>
+      Quisque laoreet leo eu eleifend bibendum. Suspendisse aliquam sem non arcu suscipit venenatis. Nam ipsum nunc,
+      aliquam id nisl pharetra,
+      faucibus rhoncus nunc. In id condimentum turpis, ut lacinia massa. Sed vel tempor nulla.
+      Pellentesque eget dolor ut augue laoreet bibendum. Pellentesque vulputate quam ut leo porttitor lacinia. Etiam a
+      neque urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Maecenas malesuada magna eget diam bibendum tempor. Donec vehicula est sit amet orci ultricies ullamcorper. In
+      quis justo a felis dictum elementum eget vel justo.
+      <br>
+      Sed at nisl ac arcu rhoncus lacinia. Aenean porttitor metus quis est tristique placerat. Cras semper justo eget
+      ante blandit ullamcorper. Suspendisse quis tortor et nisi mollis cursus eget quis justo. Nulla facilisi.
+      Donec tempor lorem a varius tempus.
+      Fusce quam sapien, laoreet id dictum nec, pellentesque vel diam. Ut in consequat tellus. Nunc tortor turpis,
+      viverra at molestie nec, hendrerit ac mi. Etiam sed egestas mi. Praesent ultricies vitae est eget laoreet.
+
+    </p>
+
+  </div>
+
+</div>
+{% endblock %}
